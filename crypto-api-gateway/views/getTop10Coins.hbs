@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Cryptocurrency and Fiat Currency</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Top 10 Cryptocurrency Converter Calculator</h1>
+    <form action="/exchange-rate/convertCoinToFiat" method="POST" class="border rounded-lg border-gray-300 p-6 space-y-4">
+      <div class="flex items-center">
+        <div class="w-full sm:w-1/4">
+          <label for="cryptoSelect" class="block text-sm font-medium text-gray-700">Choose a cryptocurrency:</label>
+          <select id="cryptoSelect" name="crypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            {{#each topCrypto}}
+              <option value="{{crypto_id}}">{{crypto_id}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="w-full sm:w-1/4 ml-4">
+          <label for="fiatSelect" class="block text-sm font-medium text-gray-700">Choose a fiat currency:</label>
+          <select id="fiatSelect" name="fiat" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+             {{#each fiats}}
+              <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="w-full sm:w-1/4 ml-4">
+          <label for="totalAmount" class="block text-sm font-medium text-gray-700">Enter total amount of coins:</label>
+          <input type="text" id="totalAmount" name="total" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" pattern="[0-9]*[.,]?[0-9]+" title="Please enter a valid number" required>
+        </div>
+      </div>
+      <div class="w-full mt-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 block w-full sm:w-auto">Calculate Price</button>
+      </div>
+    </form>
+    
+    <div class="mt-8">
+      <a href="/app/home" class="text-blue-500 hover:underline">Back to Home</a>
+    </div>
+
+  </div>
+</body>
+</html>

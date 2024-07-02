@@ -1,0 +1,24 @@
+services:
+  api_gateway:
+    build: ./crypto-api-gateway
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./crypto-api-gateway/src:/usr/src/app/src
+    command: npm run start:dev
+    environment:
+      - PORT=3000
+  crypto_market_microservice:
+    build: ./crypto-market-service
+    volumes:
+      - ./crypto-market-service/src:/usr/src/app/src
+    command: npm run start:dev
+  exchange_rate_microservice:
+    build: ./exchange-rate-service
+    volumes:
+      - ./exchange-rate-service/src:/usr/src/app/src
+    command: npm run start:dev
+  nats:
+    image: nats
+    ports:
+      - 4222:4222

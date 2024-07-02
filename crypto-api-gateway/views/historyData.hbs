@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historical Market Data</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <h1 class="text-3xl font-bold mb-6">Historical Market Data of {{ selectedCrypto }}</h1>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg overflow-hidden border border-gray-300">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b-2">Date</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b-2">Market Cap (USD)</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b-2">24h Volume (USD)</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b-2">24h Change (%)</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b-2">Price (USD)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-300">
+          {{#each marketData}}
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap border-b">
+              {{ created_date }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap border-b">
+              {{ usd_market_cap }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap border-b">
+              {{ usd_24h_vol }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap border-b">
+              {{ usd_24h_change }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap border-b">
+              {{ usd }}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="mt-8">
+      <a href="/market-data/getHistory" class="text-blue-500 hover:underline">Back to History Data</a>
+    </div>
+    <div class="mt-8">
+      <a href="/app/home" class="text-blue-500 hover:underline">Back to Home</a>
+    </div>
+
+  </div>
+</body>
+</html>
