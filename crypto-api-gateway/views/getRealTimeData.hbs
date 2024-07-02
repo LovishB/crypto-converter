@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Cryptocurrency Data</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles for the table */
+    .table-container {
+      width: 50%;
+    }
+    .table-header {
+      text-align: left;
+    }
+    .table-cell {
+      max-width: 100px; /* Adjust the width as needed */
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Real-Time Cryptocurrency Data</h1>
+    
+    <div class="overflow-x-auto table-container">
+      <table class="min-w-full bg-white border rounded-lg shadow-md mb-6">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="border px-4 py-2 table-header">Cryptocurrency</th>
+            <th class="border px-4 py-2 table-header">Value</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-600">
+          {{#each crypto}}
+          <tr>
+            <td class="border px-4 py-2 table-cell">{{@key}} (USD)</td>
+            <td class="border px-4 py-2 table-cell">{{this.usd}}</td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2 table-cell">Market Cap (USD)</td>
+            <td class="border px-4 py-2 table-cell">{{this.usd_market_cap}}</td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2 table-cell">24h Volume (USD)</td>
+            <td class="border px-4 py-2 table-cell">{{this.usd_24h_vol}}</td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2 table-cell">24h Change (%)</td>
+            <td class="border px-4 py-2 table-cell">{{this.usd_24h_change}}</td>
+          </tr>
+          <tr>
+            <td class="border px-4 py-2 table-cell">Last Updated At</td>
+            <td class="border px-4 py-2 table-cell" data-timestamp="{{this.last_updated_at}}"></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8">
+      <a href="/app/home" class="text-blue-500 hover:underline">Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('td[data-timestamp]').forEach(td => {
+        const timestamp = td.getAttribute('data-timestamp');
+        const date = new Date(timestamp * 1000);
+        const formattedDate = date.toLocaleString();
+        td.textContent = formattedDate;
+      });
+    });
+  </script>
+</body>
+</html>

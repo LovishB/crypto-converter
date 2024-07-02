@@ -45,6 +45,13 @@ export class MarketController {
     return marketData;
   }
 
+  //msg: market data for sceduled task
+  @MessagePattern({ cmd: 'getRealTimeData'})
+  async getMarketDataMsg(@Payload() req: { ids: string }) {
+    const marketData = this.marketDataService.getMarketData(req.ids);
+    return marketData;
+  }
+
   //Get History Data of a coin
   @MessagePattern({ cmd: 'getHistoryOfCoin' })
   async getHistoryOfCoin(@Payload() data: { coin: string }) {
@@ -54,6 +61,7 @@ export class MarketController {
         .from('market-data')
         .select('*')
         .eq('crypto_name', data.coin)
+        .order('created_date', { ascending: false }) // Sort by created_date in descending order
     ).data;
   }
 }

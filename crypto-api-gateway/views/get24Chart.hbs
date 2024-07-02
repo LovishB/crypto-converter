@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>24h Change Chart</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles for the table */
+    .table-header {
+      text-align: left;
+    }
+    .table-cell {
+      max-width: 100px; /* Adjust the width as needed */
+      word-wrap: break-word;
+    }
+  </style>
+  <!-- Include Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">24h Change Chart</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Chart Section -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <canvas id="lineChart" class="w-full"></canvas>
+      </div>
+      
+      <!-- Table Section -->
+      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
+          <thead class="bg-gray-100 text-gray-700">
+            <tr>
+              <th class="border px-4 py-2 table-header">Cryptocurrency</th>
+              <th class="border px-4 py-2 table-header">Date</th>
+              <th class="border px-4 py-2 table-header">24h Change (%)</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-600">
+            {{#each tableData}}
+            <tr>
+              <td class="border px-4 py-2 table-cell">{{crypto_name}}</td>
+              <td class="border px-4 py-2 table-cell">{{created_date}}</td>
+              <td class="border px-4 py-2 table-cell">{{usd_24h_change}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a href="/app/home" class="text-blue-500 hover:underline">Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('lineChart').getContext('2d');
+      const labels = ['2024-07-02', '2024-07-01', '2024-06-31'];
+      const usdChange = [1.9365581715583515, 5.624162657763108, -1.624162657763108];
+
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '24h Change (%)',
+            data: usdChange,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 1,
+            fill: false
+          }]
+        },
+      });
+    });
+  </script>
+</body>
+</html>

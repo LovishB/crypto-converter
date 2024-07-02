@@ -23,7 +23,6 @@ export class MarketController {
       this.natsClient.send({ cmd: 'getTop10Coins' }, {}),
     );
     if (!topCrypto) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-    const fiats = ['usd', 'inr']; // Static fiat currencies
     const supportedCurrency = await lastValueFrom(
       this.natsClient.send({ cmd: 'getSupportedCurrency' }, {}),
     );
@@ -31,36 +30,42 @@ export class MarketController {
     return { topCrypto, fiats: supportedCurrency }; // Pass data to the Handlebars template
   }
 
-  //Retirive realtime exchange rates
-  @Get('getRates')
-  async getExchangeRates() {
-    const rates = await lastValueFrom(
-      this.natsClient.send({ cmd: 'getRates' }, {}),
-    );
-    if (!rates) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-    return rates;
-  }
-
-  //Get Coins with Stored Historical Data
-  @Get('gethistory')
-  @Render('getHistory')
-  async getHistory() {
-    const cryptocurrencies = await lastValueFrom(
-      this.natsClient.send({ cmd: 'getTop10Coins' }, {}),
-    );
-    if (!cryptocurrencies) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-    return { cryptocurrencies };
-  }
-
   //Get Historical Data of market cap of a coin
   @Get('historyData')
-  @Render('historyData') // Render the 'historyData' view template
+  @Render('historyData')
   async getHistoryOfCoin(@Query('selectedCrypto') selectedCrypto: string) {
     console.log(`Getting history data of ${selectedCrypto}`);
-    const data = await lastValueFrom(
+    const historicalData = await this.getHistoryData(selectedCrypto);
+    return { marketData: historicalData, selectedCrypto }; // Pass fetched data to the view template
+  }
+
+  //Get 24 Hr Change Chart
+  @Get('get24Chart')
+  @Render('get24Chart')
+  async get24Chart(@Query('selectedCrypto') selectedCrypto: string) {
+    console.log(`Getting history data of ${selectedCrypto}`);
+    const historicalData = await this.getHistoryData(selectedCrypto);
+    return { tableData: historicalData, data: JSON.stringify(historicalData) };// Pass fetched data to the view template
+  }
+
+  private async getHistoryData(selectedCrypto: string) {
+    const historicalData = await lastValueFrom(
       this.natsClient.send({ cmd: 'getHistoryOfCoin' }, { coin: selectedCrypto }),
     );
-    if (!data) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-    return { marketData: data, selectedCrypto }; // Pass fetched data to the view template
+    if (!historicalData) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    return historicalData;
+  } 
+
+  //Retrive Real Time Market data of a coin
+  @Get('getRealTimeData')
+  @Render('getRealTimeData')
+  async getRealTimeData(@Query('selectedCrypto') selectedCrypto: string) {
+    console.log(`Getting history data of ${selectedCrypto}`);
+    const realTimeData = await lastValueFrom(
+      this.natsClient.send({ cmd: 'getRealTimeData' }, { ids: selectedCrypto }),
+    );
+    if (!realTimeData) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    return { crypto: realTimeData };// Pass fetched data to the view template
   }
+
 }

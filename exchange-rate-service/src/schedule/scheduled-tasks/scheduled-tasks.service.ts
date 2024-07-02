@@ -16,8 +16,9 @@ export class ScheduledTasksService {
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   handleCron() {
     console.log('Started Sceduled Task');
+    const cryptos = 'bitcoin,ethereum,binancecoin,solana,the-open-network,cardano,avalanche-2,tron,bitcoin-cash,near';
     try {
-      this.natsClient.emit('getMarketData', { ids: 'bitcoin,solana' });
+      this.natsClient.emit('getMarketData', { ids: cryptos });
     } catch (error) {
       console.error('Error sending event:', error.message);
     }
