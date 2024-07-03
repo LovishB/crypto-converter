@@ -1,6 +1,8 @@
 # crypto-converter
 The crypto-convertor project is a web application designed to provide real-time conversion rates for cryptocurrencies to various fiat currencies. It fetches current market data using external APIs, allowing users to quickly and accurately convert cryptocurrency values to their preferred fiat currency. This tool also intracts with real time market data for cryptocurrency enthusiasts alike.
 
+Try Here > [Crypto Converter](http://64.227.162.148:3000/app/home)
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
