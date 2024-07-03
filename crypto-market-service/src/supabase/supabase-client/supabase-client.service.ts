@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import config from 'src/config/config';
+import { Injectable } from "@nestjs/common";
+import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import config from "src/config/config";
 
 @Injectable()
 export class SupabaseClientService {
@@ -26,11 +26,7 @@ export class SupabaseClientService {
   async readTableTopCoinsFiat() {
     console.log('Fetching data from "top-coins-fiat" table');
     const supabase = this.getClient();
-    return (
-        await supabase
-          .from('top-coins-fiat')
-          .select('*')
-    ).data;
+    return (await supabase.from("top-coins-fiat").select("*")).data;
   }
 
   // Read data from 'market-data' table
@@ -39,18 +35,18 @@ export class SupabaseClientService {
     const supabase = this.getClient();
     return (
       await supabase
-        .from('market-data')
-        .select('*')
-        .eq('crypto_name', coin)
-        .order('created_date', { ascending: false }) // Sort by created_date in desc
-    ).data;
+        .from("market-data")
+        .select("*")
+        .eq("crypto_name", coin)
+        .order("created_date", { ascending: false })
+    ).data; // Sort by created_date in desc
   }
 
   // Insert data into 'market-data' table
   async insertTableMarketData(formattedData) {
     const supabase = this.getClient();
     const { data, error } = await supabase
-      .from('market-data')
+      .from("market-data")
       .insert(formattedData)
       .select();
   }

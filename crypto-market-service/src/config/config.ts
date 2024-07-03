@@ -10,11 +10,11 @@ interface Config {
 
 const config: Config = {
   supabase: {
-    url: process.env.SUPABASE_URL || '',
-    apiKey: process.env.SUPABASE_API_KEY || '',
+    url: process.env.SUPABASE_URL || "",
+    apiKey: process.env.SUPABASE_API_KEY || "",
   },
   coingecko: {
-    apiKey: process.env.COINGECKO_API_KEY || '',
+    apiKey: process.env.COINGECKO_API_KEY || "",
   },
 };
 
