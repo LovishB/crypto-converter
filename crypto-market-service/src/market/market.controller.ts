@@ -1,59 +1,51 @@
-import { Controller, Inject } from '@nestjs/common';
-import {
-  ClientProxy,
-  EventPattern,
-  MessagePattern,
-  Payload,
-} from '@nestjs/microservices';
-import { MarketDataService } from './market-data/market-data.service';
-import { ConvertFiatDto } from './dtos/ConvertFiatDto';
-import { SupabaseClientService } from 'src/supabase/supabase-client/supabase-client.service';
+import { Controller } from "@nestjs/common";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
+import { MarketDataService } from "./market-data/market-data.service";
+import { ConvertFiatDto } from "./dtos/ConvertFiatDto";
+import { SupabaseClientService } from "src/supabase/supabase-client/supabase-client.service";
 
-@Controller('market')
+@Controller("market")
 export class MarketController {
   constructor(
     private marketDataService: MarketDataService,
-    @Inject('NATS_SERVICE') private natsClient: ClientProxy,
     private readonly supabaseService: SupabaseClientService,
   ) {}
 
-  //Retirive top 10 coins based on their market cap
-  @MessagePattern({ cmd: 'getTop10Coins' })
-  getTop10Coins(@Payload() data: {}) {
-    return this.marketDataService.getTop10Coins();
+  // Msg Handler for fetching top 10 coins and supported fiat
+  @MessagePattern({ cmd: "getTop10Coins" })
+  async getTop10Coins(@Payload() data: {}) {
+    // Calling Supabase database to read top coins and fiat data
+    return this.supabaseService.readTableTopCoinsFiat();
   }
 
-  //Retirive supportedCurrency of coin gecko
-  @MessagePattern({ cmd: 'getSupportedCurrency' })
-  getSupportedCurrency(@Payload() data: {}) {
-    return this.marketDataService.getSupportedCurrency();
-  }
-
-  //Get Current Price of a coin
-  @MessagePattern({ cmd: 'getCurrentPrice' })
+  // Msg Handler for getting current price of a coin
+  @MessagePattern({ cmd: "getCurrentPrice" })
   getCurrentPrice(@Payload() convertFiatDto: ConvertFiatDto) {
+    // Calling MarketDataService to fetch current pricing for a specific coin and fiat from external API
     return this.marketDataService.getCoinPricing(
       convertFiatDto.crypto,
       convertFiatDto.fiat,
     );
   }
 
-  //event: market data for sceduled task
-  @EventPattern('getMarketData')
+  // Event handler for receiving market data for scheduled tasks
+  @EventPattern("getMarketData")
   async getMarketData(@Payload() req: { ids: string }) {
-    const marketData = this.marketDataService.getMarketData(req.ids);
-    return marketData;
+    // Calling MarketDataService to fetch market data for specified cryptos from external API
+    return this.marketDataService.getMarketData(req.ids, true);
   }
 
-  //Get History Data of a coin
-  @MessagePattern({ cmd: 'getHistoryOfCoin' })
+  // Message handler for receiving real-time market data
+  @MessagePattern({ cmd: "getRealTimeData" })
+  async getMarketDataMsg(@Payload() req: { ids: string }) {
+    // Calling MarketDataService to fetch real-time market data for specified crypto from external API
+    return this.marketDataService.getMarketData(req.ids, false);
+  }
+
+  // Msg Handler for fetching historical data of a coin
+  @MessagePattern({ cmd: "getHistoryOfCoin" })
   async getHistoryOfCoin(@Payload() data: { coin: string }) {
-    const supabase = this.supabaseService.getClient();
-    return (
-      await supabase
-        .from('market-data')
-        .select('*')
-        .eq('crypto_name', data.coin)
-    ).data;
+    // Calling Supabase database to read historical data for a specific coin
+    return this.supabaseService.readTableMarketData(data.coin);
   }
 }

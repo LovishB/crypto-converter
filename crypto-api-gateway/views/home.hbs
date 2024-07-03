@@ -6,28 +6,98 @@
   <title>Cryptocurrency Converter App</title>
   <!-- Include Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Include FontAwesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
   <div class="container mx-auto px-4 py-8">
     <!-- Header and Project Explanation -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-4">Welcome to Cryptocurrency Converter App</h1>
-      <p class="text-lg text-gray-800">This app allows you to convert cryptocurrencies to fiat currencies and explore historical data of top cryptocurrencies.</p>
+      <div class="flex items-center">
+        <i class="fas fa-bolt text-blue-500 text-3xl mr-2"></i> <!-- Bolt Icon -->
+        <h1 class="text-3xl font-bold">Welcome to Cryptocurrency Converter</h1>
+      </div>
+      <p class="text-lg text-gray-800">This app allows you to convert cryptocurrencies to fiat currencies and explore market data of top cryptocurrencies.</p>
     </div>
 
     <!-- Buttons for Cryptocurrency Converter and Historical Data -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <!-- Cryptocurrency Converter Button -->
-      <div class="border border-gray-300 rounded-lg p-4">
-        <h2 class="text-xl font-bold mb-2">Cryptocurrency Converter</h2>
+      <div class="mb-8 border border-gray-300 rounded-lg p-4">
+        <div class="flex items-center">
+          <h2 class="text-xl font-bold mb-2 mr-4">Cryptocurrency Converter</h2>
+          <i class="fas fa-exchange-alt text-blue-500 text-2xl mr-3"></i> <!-- Double Sided Arrows Icon -->
+        </div>
         <a href="/market-data/converter" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md block text-center w-48">Go to Converter</a>
       </div>
       <!-- Historical Data Button -->
-      <div class="border border-gray-300 rounded-lg p-4">
-        <h2 class="text-xl font-bold mb-2">Historical Data of Top Cryptocurrencies</h2>
-        <a href="/market-data/gethistory" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-md block text-center w-48">View Historical Data</a>
+      <div class="mb-8 border border-gray-300 rounded-lg p-4">
+        <h2 class="text-xl font-bold mb-2">Historical Data of Top Cryptos</h2>
+        <form action="/market-data/historyData/{{selectedCrypto}}" method="GET" class="space-y-4">
+          <div class="flex items-center">
+            <div class="w-48"> <!-- Adjust width as needed -->
+              <label for="cryptoSelect" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
+              <select id="cryptoSelect" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                {{#each cryptocurrencies}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="w-full mt-4">
+            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 block w-full sm:w-auto">View Historical Data</button>
+          </div>
+        </form>
       </div>
     </div>
+
+     <!-- Add margin between sections -->
+    <div class="my-2"></div>
+
+    <!-- Buttons for 24 Hrs Change Chart and Market Cap of today -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Cryptocurrency Converter Button -->
+      <div class="mb-8 border border-gray-300 rounded-lg p-4">
+        <div class="flex items-center">
+          <h2 class="text-xl font-bold mb-2 mr-4">Daily 24 Hr Change Chart</h2>
+          <i class="fas fa-chart-line text-blue-500 text-2xl mr-3"></i> <!-- Chart Icon -->
+        </div>
+        <form action="/market-data/get24Chart/{{selectedCrypto}}" method="GET" class="space-y-4">
+          <div class="flex items-center">
+            <div class="w-48"> <!-- Adjust width as needed -->
+              <label for="cryptoSelectDaily" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
+              <select id="cryptoSelectDaily" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                {{#each cryptocurrencies}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="w-full mt-4">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 block w-full sm:w-auto">Go to Converter</button>
+          </div>
+        </form>
+      </div>
+      <!-- Real Time MArket Cap section -->
+      <div class="mb-8 border border-gray-300 rounded-lg p-4">
+        <h2 class="text-xl font-bold mb-2">Real Time Market Data</h2>
+        <form action="/market-data/getRealTimeData/{{selectedCrypto}}" method="GET" class="space-y-4">
+          <div class="flex items-center">
+            <div class="w-48"> <!-- Adjust width as needed -->
+              <label for="cryptoSelectRealTime" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
+              <select id="cryptoSelectRealTime" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                {{#each cryptocurrencies}}
+                  <option value="{{this}}">{{this}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="w-full mt-4">
+            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 block w-full sm:w-auto">View Real Time Data</button>
+          </div>
+        </form>
+      </div>
+
   </div>
 </body>
 </html>

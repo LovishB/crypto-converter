@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
   //microservice will subscribe to nats, will not listen to any port
@@ -10,7 +10,7 @@ async function bootstrap() {
       //configuring nats
       transport: Transport.NATS,
       options: {
-        servers: ['nats://nats'],
+        servers: ["nats://nats"],
       },
     },
   );

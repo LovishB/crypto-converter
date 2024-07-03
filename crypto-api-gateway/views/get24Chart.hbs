@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>24h Change Chart</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles for the table */
+    .table-header {
+      text-align: left;
+    }
+    .table-cell {
+      max-width: 100px; /* Adjust the width as needed */
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">24h Change Chart</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div id="plotlyChart"></div>
+    </div>
+
+    <!-- Add margin between sections -->
+    <div class="my-8"></div>
+
+    <!-- Table Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+        <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
+          <thead class="bg-gray-100 text-gray-700">
+            <tr>
+              <th class="border px-4 py-2 table-header">Cryptocurrency</th>
+              <th class="border px-4 py-2 table-header">Date</th>
+              <th class="border px-4 py-2 table-header">24h Change (%)</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-600">
+            {{#each historicalData}}
+            <tr>
+              <td class="border px-4 py-2 table-cell">{{crypto_name}}</td>
+              <td class="border px-4 py-2 table-cell">{{created_date}}</td>
+              <td class="border px-4 py-2 table-cell">{{usd_24h_change}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a href="/app/home" class="text-blue-500 hover:underline">Back to Home</a>
+    </div>
+  </div>
+
+   <!-- Include Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- Script to Initialize Plotly Chart -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const labels = {{{labels}}};
+      const usdChange = {{{usdChange}}};
+
+      // Prepare data for Plotly chart
+      const data = [{
+        x: labels,
+        y: usdChange,
+        type: 'line',
+        mode: 'lines+markers',
+        marker: { color: 'blue' },
+      }];
+
+      // Layout options for Plotly chart
+      const layout = {
+        title: '24h Change Chart',
+        xaxis: {
+          title: 'Date',
+        },
+        yaxis: {
+          title: '24h Change (%)',
+        },
+      };
+
+      // Render Plotly chart
+      Plotly.newPlot('plotlyChart', data, layout);
+    });
+  </script>
+</body>
+</html>
