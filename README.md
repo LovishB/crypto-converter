@@ -11,6 +11,7 @@ The crypto-convertor project is a web application designed to provide real-time 
 ## Infrastructure
 This Application is developed using Microservice Infrastructure using NATS and Nest.js
 For client side, HBS Template engine to render response from backend
+![Microservices Architecture](microservices-infra.png)
 
 ## Getting Started
 1) Clone the repository in your local system
