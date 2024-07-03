@@ -39,7 +39,7 @@
               <label for="cryptoSelect" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
               <select id="cryptoSelect" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 {{#each cryptocurrencies}}
-                  <option value="{{crypto_id}}">{{crypto_id}}</option>
+                  <option value="{{this}}">{{this}}</option>
                 {{/each}}
               </select>
             </div>
@@ -68,7 +68,7 @@
               <label for="cryptoSelectDaily" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
               <select id="cryptoSelectDaily" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 {{#each cryptocurrencies}}
-                  <option value="{{crypto_id}}">{{crypto_id}}</option>
+                  <option value="{{this}}">{{this}}</option>
                 {{/each}}
               </select>
             </div>
@@ -87,7 +87,7 @@
               <label for="cryptoSelectRealTime" class="block text-sm font-medium text-gray-700">Select cryptocurrency:</label>
               <select id="cryptoSelectRealTime" name="selectedCrypto" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 {{#each cryptocurrencies}}
-                  <option value="{{crypto_id}}">{{crypto_id}}</option>
+                  <option value="{{this}}">{{this}}</option>
                 {{/each}}
               </select>
             </div>

@@ -16,20 +16,19 @@
       word-wrap: break-word;
     }
   </style>
-  <!-- Include Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">24h Change Chart</h1>
-
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Chart Section -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <canvas id="lineChart" class="w-full"></canvas>
-      </div>
-      
-      <!-- Table Section -->
+      <div id="plotlyChart"></div>
+    </div>
+
+    <!-- Add margin between sections -->
+    <div class="my-8"></div>
+
+    <!-- Table Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="overflow-x-auto bg-white rounded-lg shadow-md">
         <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
           <thead class="bg-gray-100 text-gray-700">
@@ -40,7 +39,7 @@
             </tr>
           </thead>
           <tbody class="text-gray-600">
-            {{#each tableData}}
+            {{#each historicalData}}
             <tr>
               <td class="border px-4 py-2 table-cell">{{crypto_name}}</td>
               <td class="border px-4 py-2 table-cell">{{created_date}}</td>
@@ -57,26 +56,37 @@
     </div>
   </div>
 
+   <!-- Include Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<!-- Script to Initialize Plotly Chart -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('lineChart').getContext('2d');
-      const labels = ['2024-07-02', '2024-07-01', '2024-06-31'];
-      const usdChange = [1.9365581715583515, 5.624162657763108, -1.624162657763108];
+      const labels = {{{labels}}};
+      const usdChange = {{{usdChange}}};
 
-      const chart = new Chart(ctx, {
+      // Prepare data for Plotly chart
+      const data = [{
+        x: labels,
+        y: usdChange,
         type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: '24h Change (%)',
-            data: usdChange,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderWidth: 1,
-            fill: false
-          }]
+        mode: 'lines+markers',
+        marker: { color: 'blue' },
+      }];
+
+      // Layout options for Plotly chart
+      const layout = {
+        title: '24h Change Chart',
+        xaxis: {
+          title: 'Date',
         },
-      });
+        yaxis: {
+          title: '24h Change (%)',
+        },
+      };
+
+      // Render Plotly chart
+      Plotly.newPlot('plotlyChart', data, layout);
     });
   </script>
 </body>

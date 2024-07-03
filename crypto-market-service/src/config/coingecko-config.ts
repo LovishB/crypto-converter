@@ -1,7 +1,9 @@
+import config from "./config";
+
 export const CoinGeckoConfig = {
   baseURL: 'https://api.coingecko.com/api/v3',
   headers: {
-    'x-cg-api-key': 'CG-qkmTY8PweayDmjSTnx5GGa6B',
+    'x-cg-api-key': config.coingecko.apiKey,
     accept: 'application/json',
   },
   top10CoinsParams: {
